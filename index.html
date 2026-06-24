@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SuperGrid DC · Superconducting Power &amp; Cooling for Data Centers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="dot"></span> SuperGrid&nbsp;DC</div>
+    <div class="nav-links">
+      <a href="index.html" class="active">Technology</a>
+      <a href="financials.html">Economics</a>
+      <a href="calculator.html">Calculator</a>
+      <a href="design.html">Design</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">⚡ Superconducting infrastructure for AI-scale data centers</span>
+    <h1>Superconducting power <span class="grad">and cooling</span>, inside the data center.</h1>
+    <p class="lead">
+      AI data centers are racing toward 500&nbsp;MW campuses, and grid bottlenecks and heat are the wall.
+      SuperGrid&nbsp;DC replaces conventional copper feeds and separate chillers with a single high-temperature
+      superconducting (HTS) DC cable. Its cryogenic loop also cools the racks, and it carries its own data
+      over power-line communication.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="financials.html">Explore the economics →</a>
+      <a class="btn btn-ghost" href="#concept">How it works</a>
+    </div>
+  </div>
+
+  <!-- animated cable cross-section -->
+  <svg class="cable-graphic" width="420" height="420" viewBox="0 0 420 420" fill="none">
+    <defs>
+      <radialGradient id="core" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#bff6ff"/><stop offset="60%" stop-color="#34e3ff"/><stop offset="100%" stop-color="#1e6bd6"/>
+      </radialGradient>
+      <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#5b8cff"/><stop offset="100%" stop-color="#a78bfa"/>
+      </linearGradient>
+    </defs>
+    <circle cx="210" cy="210" r="180" stroke="rgba(120,170,255,0.18)" stroke-width="1.5"/>
+    <circle cx="210" cy="210" r="150" stroke="rgba(120,170,255,0.12)" stroke-width="1"/>
+    <circle cx="210" cy="210" r="120" stroke="url(#ring)" stroke-width="10" opacity="0.5"/>
+    <circle class="flow" cx="210" cy="210" r="95" stroke="#34e3ff" stroke-width="3" opacity="0.8"/>
+    <circle cx="210" cy="210" r="70" stroke="#5b8cff" stroke-width="6" opacity="0.7"/>
+    <circle cx="210" cy="210" r="48" fill="url(#core)"/>
+    <text x="210" y="206" text-anchor="middle" font-family="Space Grotesk" font-size="22" font-weight="700" fill="#06122a">8.33</text>
+    <text x="210" y="226" text-anchor="middle" font-family="Inter" font-size="12" fill="#06122a">kA / pole</text>
+  </svg>
+</header>
+
+<!-- STATS -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="grid grid-4">
+      <div class="glass stat reveal"><div class="stat-num stat-cyan">500<small> MW</small></div><div class="stat-label">Target facility scale for AI campuses</div></div>
+      <div class="glass stat reveal"><div class="stat-num">±30<small> kV</small></div><div class="stat-label">Bipolar DC feeds rectifiers and removes a transformer</div></div>
+      <div class="glass stat reveal"><div class="stat-num">77<small> K</small></div><div class="stat-label">Liquid-nitrogen operating temperature (-196 °C)</div></div>
+      <div class="glass stat reveal"><div class="stat-num">1<small> system</small></div><div class="stat-label">Power, cooling and data in a single cryogenic run</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- INTRODUCTION -->
+<section id="intro" style="padding-bottom:32px">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center">
+      <span class="eyebrow">What this is</span>
+      <h2 class="sec-title" style="margin-bottom:10px">The case for superconducting data centers, in one place.</h2>
+      <p class="sec-sub" style="margin:0 auto">
+        Explore the technology, the economics, and a live cost model you can run yourself.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="wrap">
+    <div class="grid grid-2" style="align-items:center">
+      <div class="reveal">
+        <span class="eyebrow">The problem</span>
+        <h2 class="sec-title">Power and heat are the wall AI is hitting.</h2>
+        <p class="sec-sub" style="margin-bottom:18px">
+          Data center electricity demand is projected to climb from roughly 415&nbsp;TWh in 2024 to about
+          945&nbsp;TWh by 2030 (IEA, <em>Energy &amp; AI</em>, 2025). Operators need to secure around 500&nbsp;MW per
+          campus before grid bottlenecks stall expansion, and new transmission lines take 4 to 8 years in advanced
+          economies.
+        </p>
+        <p class="sec-sub">
+          Conventional copper feeds become physically enormous at these currents, and the cooling system fights
+          waste heat the cables themselves create. Today the two biggest constraints, getting power in and getting
+          heat out, are solved separately. They should be one system.
+        </p>
+      </div>
+      <div class="glass card reveal">
+        <h3>🌡️ Why superconductors</h3>
+        <p style="margin-bottom:16px">A high-temperature superconductor (YBCO tape, cooled by liquid nitrogen) carries enormous current with
+          <b style="color:var(--cyan)">zero resistive loss</b>. At ±30&nbsp;kV bipolar DC, 500&nbsp;MW flows as just
+          <b style="color:var(--cyan)">8.33&nbsp;kA per pole</b>, half the unipolar current, with no AC losses at all.</p>
+        <p>The cable must stay below roughly 93&nbsp;K, but that cold loop is an asset rather than pure overhead.
+          The same liquid nitrogen that keeps the cable superconducting carries away rack heat. The cost center
+          becomes shared infrastructure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONCEPT -->
+<section id="concept">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center; margin-bottom:40px">
+      <span class="eyebrow">The technology</span>
+      <h2 class="sec-title">Three innovations, one cryogenic spine.</h2>
+      <p class="sec-sub" style="margin:0 auto">Power delivery, cooling and data integrated into a single superconducting system.</p>
+    </div>
+    <div class="grid grid-3">
+      <div class="glass card reveal">
+        <h3><span class="ico">🔌</span> HTS power cable</h3>
+        <p>A ±30&nbsp;kV bipolar DC superconducting cable runs from grid entry to the electrical bays. Zero conductor
+          loss, a fraction of the footprint, and it feeds the rack rectifiers directly, eliminating a step-down transformer.</p>
+      </div>
+      <div class="glass card reveal">
+        <h3><span class="ico">❄️</span> Shared LN₂ cooling</h3>
+        <p>The closed-loop liquid nitrogen that keeps the cable cold doubles as the cold side of the rack-cooling loop
+          through a heat exchanger. One cryogenic system replaces cable cooling and separate chillers.</p>
+      </div>
+      <div class="glass card reveal">
+        <h3><span class="ico">📡</span> Power-line data</h3>
+        <p>Power-line communication (PLC) sends monitoring and control data over the HTS cable itself,
+          removing a parallel data-cable run and simplifying the rack-to-grid path.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REQUIREMENTS -->
+<section id="requirements">
+  <div class="wrap">
+    <span class="eyebrow">Design requirements</span>
+    <h2 class="sec-title">Six things the system delivers.</h2>
+    <p class="sec-sub" style="margin-bottom:28px">Every requirement is checked against its input in the economic model.</p>
+    <div class="grid grid-2">
+      <div class="glass req reveal"><span class="chk">✓</span><div><b>Deliver up to 500 MW</b><br><span>Scaled for hyperscale AI campus loads.</span></div></div>
+      <div class="glass req reveal"><span class="chk">✓</span><div><b>Maintain below -180 °C (about 93 K)</b><br><span>Cryostat holds the HTS below its critical temperature.</span></div></div>
+      <div class="glass req reveal"><span class="chk">✓</span><div><b>High data-signal integrity</b><br><span>PLC reliable across the in-facility cable length.</span></div></div>
+      <div class="glass req reveal"><span class="chk">✓</span><div><b>Automatic quench protection</b><br><span>Fiber-Bragg sensing and fast bypass on loss of superconductivity.</span></div></div>
+      <div class="glass req reveal"><span class="chk">✓</span><div><b>Indoor nitrogen safety</b><br><span>O₂ monitoring and forced ventilation per indoor N₂ regulation.</span></div></div>
+      <div class="glass req reveal"><span class="chk">✓</span><div><b>Fits standard DC layout</b><br><span>Reclaims floor space rather than demanding more.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NKT -->
+<section id="nkt">
+  <div class="wrap">
+    <div class="reveal" style="margin-bottom:26px">
+      <span class="eyebrow">Industry expertise</span>
+      <h2 class="sec-title">Validated against commercial HTS practice.</h2>
+      <p class="sec-sub">
+        <b style="color:var(--ink)">NKT A/S</b>, the Danish high-voltage cable manufacturer headquartered in Brøndby,
+        is an active developer of commercial HTS cable systems. The concept has been reviewed with
+        <b style="color:var(--ink)">Olfert Holte</b> of NKT to test its technical feasibility and economics.
+      </p>
+    </div>
+
+    <div class="glass quote reveal">
+      “Supply us with a cable that can provide 500&nbsp;MW at 30&nbsp;kV. It feeds the rectifiers directly and lets you take a whole transformer out of the pipeline.”
+      <cite><b>Olfert Holte, NKT</b></cite>
+    </div>
+
+    <div class="grid grid-3" style="margin-top:24px">
+      <div class="glass card reveal">
+        <h3>🏙️ The Munich precedent</h3>
+        <p>Munich's <b>SuperLink</b> HTS project demonstrates the value: a single half-metre trench replacing five
+          conventional cable systems. Inside a data hall, the equivalent gain is reclaimed floor space rather
+          than kilometres of street.</p>
+      </div>
+      <div class="glass card reveal">
+        <h3>♻️ Effectively no aging</h3>
+        <p>The superconducting tape has no meaningful aging mechanism; failures are mechanical rather than gradual.
+          The model evaluates the tape over a 40-year life, with only the cryogenic plant scheduled for
+          mid-life replacement.</p>
+      </div>
+      <div class="glass card reveal">
+        <h3>🎯 An open market</h3>
+        <p>HTS inside a data center has not been deployed before. Superconducting economics require at least 50&nbsp;%
+          continuous loading, a threshold AI workloads comfortably exceed.</p>
+      </div>
+    </div>
+
+    <div class="callout cool reveal" style="margin-top:24px">
+      <span class="ci">🧊</span>
+      <div>
+        <h4>Material footprint</h4>
+        <p>Rare-earth content is minimal, on the order of 1&nbsp;kg of yttrium per 100&nbsp;km of tape,
+          so the system is not constrained by exotic-material supply at data-center scale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section>
+  <div class="wrap">
+    <div class="glass card reveal" style="text-align:center; padding:48px 30px;
+      background:linear-gradient(120deg, rgba(52,227,255,0.10), rgba(91,140,255,0.08));">
+      <h2 class="sec-title">Explore the economics.</h2>
+      <p class="sec-sub" style="margin:0 auto 26px">
+        A bottom-up, physics-grounded cost and benefit model with every assumption sourced and adjustable.
+      </p>
+      <a class="btn btn-primary" href="financials.html">Open the economics →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div><b>SuperGrid DC</b><br>Superconducting power, cooling and data for AI-scale facilities.</div>
+    <div>HTS power cable, shared LN₂ cooling and PLC, inside the data center.<br>
+      © 2026 SuperGrid DC. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(()=>e.target.classList.add('in'), (i%4)*70); obs.unobserve(e.target);} });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

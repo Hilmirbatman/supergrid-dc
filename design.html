@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design · SuperGrid DC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .figure { padding: 14px; }
+  .figure svg { width: 100%; height: auto; display: block; border-radius: 12px; }
+  .cap { padding: 16px 20px 6px; }
+  .cap h3 { font-size: 18px; margin-bottom: 6px; }
+  .cap p { color: var(--ink-dim); font-size: 14.5px; }
+  .lbl-t { font-family:'Inter',sans-serif; font-size:12px; fill: var(--ink-dim); }
+  .lbl-b { font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:600; fill: var(--ink); }
+  .lbl-c { font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:600; fill: var(--cyan); }
+  .lbl-w { font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:600; fill: var(--warm); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="dot"></span> SuperGrid&nbsp;DC</div>
+    <div class="nav-links">
+      <a href="index.html">Technology</a>
+      <a href="financials.html">Economics</a>
+      <a href="calculator.html">Calculator</a>
+      <a href="design.html" class="active">Design</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" style="padding:64px 0 24px">
+  <div class="wrap">
+    <span class="tag">🛠️ Concept visuals · schematic</span>
+    <h1 style="font-size:clamp(32px,5vw,52px)">What it <span class="grad">looks like.</span></h1>
+    <p class="lead" style="max-width:62ch">
+      Schematic engineering views of the superconducting power-and-cooling spine: the system in plan,
+      the cable in cross-section, the shared liquid-nitrogen loop, and the floor-space it gives back.
+    </p>
+  </div>
+</header>
+
+<!-- FIG 1 SYSTEM -->
+<section style="padding-top:10px">
+  <div class="wrap">
+    <span class="eyebrow">Figure 1 · System architecture</span>
+    <h2 class="sec-title">One cryogenic spine: power, cooling and data.</h2>
+    <div class="glass figure reveal" style="margin-top:18px">
+      <svg viewBox="0 0 1000 440" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="cab" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#1e6bd6"/><stop offset="50%" stop-color="#34e3ff"/><stop offset="100%" stop-color="#5b8cff"/>
+          </linearGradient>
+          <linearGradient id="rack" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#16203f"/><stop offset="100%" stop-color="#0d1530"/>
+          </linearGradient>
+          <radialGradient id="cryo" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#1b3a5c"/><stop offset="100%" stop-color="#0c1c30"/>
+          </radialGradient>
+        </defs>
+
+        <!-- ambient temp band -->
+        <text x="20" y="30" class="lbl-t">Ambient hall · 293 K</text>
+
+        <!-- GRID -->
+        <g>
+          <rect x="20" y="150" width="120" height="120" rx="12" fill="#0d1530" stroke="rgba(120,170,255,0.3)"/>
+          <path d="M55 250 L80 175 L105 250 M62 225 H98 M70 200 H90" stroke="#9fb2d8" stroke-width="2.5" fill="none"/>
+          <text x="80" y="295" text-anchor="middle" class="lbl-b">Grid entry</text>
+          <text x="80" y="312" text-anchor="middle" class="lbl-t">400 kV / MV</text>
+        </g>
+
+        <!-- HTS CABLE run with cryostat -->
+        <g>
+          <rect x="140" y="195" width="260" height="30" rx="15" fill="none" stroke="rgba(167,139,250,0.4)" stroke-width="2" stroke-dasharray="2 4"/>
+          <rect x="140" y="203" width="260" height="14" rx="7" fill="url(#cab)"/>
+          <line class="flow" x1="150" y1="210" x2="395" y2="210" stroke="#bff6ff" stroke-width="3"/>
+          <text x="270" y="188" text-anchor="middle" class="lbl-c">HTS cable · ±30 kV bipolar DC · 8.33 kA</text>
+          <text x="270" y="244" text-anchor="middle" class="lbl-t">superconducting · zero resistive loss · cryostat at 77 K</text>
+        </g>
+
+        <!-- LN2 PLANT -->
+        <g>
+          <rect x="180" y="320" width="160" height="90" rx="12" fill="url(#cryo)" stroke="rgba(52,227,255,0.35)"/>
+          <text x="260" y="352" text-anchor="middle" class="lbl-b">LN₂ liquefier</text>
+          <text x="260" y="370" text-anchor="middle" class="lbl-t">closed-loop · 77 K</text>
+          <text x="260" y="388" text-anchor="middle" class="lbl-c">❄ shared cold source</text>
+          <!-- pipe up to cable -->
+          <path d="M260 320 V250 Q260 232 270 224" stroke="#34e3ff" stroke-width="3" fill="none"/>
+          <!-- pipe right to racks -->
+          <path d="M340 365 H600" stroke="#34e3ff" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
+          <text x="470" y="356" text-anchor="middle" class="lbl-c">cold loop → racks</text>
+        </g>
+
+        <!-- RECTIFIER -->
+        <g>
+          <rect x="400" y="150" width="110" height="120" rx="12" fill="#0d1530" stroke="rgba(120,170,255,0.3)"/>
+          <path d="M425 235 h60 M455 235 v-50 M438 200 h34 l-17 -22 z" stroke="#9fb2d8" stroke-width="2.5" fill="none"/>
+          <text x="455" y="295" text-anchor="middle" class="lbl-b">Rectifier</text>
+          <text x="455" y="312" text-anchor="middle" class="lbl-t">AC/DC → rack bus</text>
+        </g>
+
+        <!-- DC busbar -->
+        <rect x="510" y="203" width="90" height="14" rx="7" fill="url(#cab)"/>
+        <line class="flow" x1="515" y1="210" x2="598" y2="210" stroke="#bff6ff" stroke-width="3"/>
+        <text x="555" y="188" text-anchor="middle" class="lbl-t">DC busbar</text>
+
+        <!-- RACKS -->
+        <g>
+          <text x="800" y="30" text-anchor="middle" class="lbl-t">Server hall · liquid-cooled GPU racks</text>
+          <g>
+            <rect x="610" y="120" width="360" height="210" rx="12" fill="none" stroke="rgba(120,170,255,0.2)"/>
+            <!-- racks -->
+            <g fill="url(#rack)" stroke="rgba(52,227,255,0.3)">
+              <rect x="630" y="150" width="60" height="150" rx="6"/>
+              <rect x="710" y="150" width="60" height="150" rx="6"/>
+              <rect x="790" y="150" width="60" height="150" rx="6"/>
+              <rect x="870" y="150" width="60" height="150" rx="6"/>
+            </g>
+            <!-- fins -->
+            <g stroke="rgba(52,227,255,0.5)" stroke-width="2">
+              <path d="M636 168 h48 M636 182 h48 M636 196 h48 M636 210 h48 M636 224 h48"/>
+              <path d="M716 168 h48 M716 182 h48 M716 196 h48 M716 210 h48 M716 224 h48"/>
+              <path d="M796 168 h48 M796 182 h48 M796 196 h48 M796 210 h48 M796 224 h48"/>
+              <path d="M876 168 h48 M876 182 h48 M876 196 h48 M876 210 h48 M876 224 h48"/>
+            </g>
+            <text x="790" y="320" text-anchor="middle" class="lbl-t">power in · heat out · data over the same cable</text>
+          </g>
+          <!-- power feed into racks -->
+          <path d="M600 210 H615 V160 H630" stroke="#34e3ff" stroke-width="3" fill="none"/>
+          <!-- cold loop manifold -->
+          <path d="M600 365 H950 V305" stroke="#34e3ff" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
+        </g>
+
+        <!-- PLC data path -->
+        <path d="M150 110 H600" stroke="#a78bfa" stroke-width="2" fill="none" stroke-dasharray="3 7"/>
+        <circle class="flow" cx="0" cy="0" r="0" />
+        <text x="360" y="103" text-anchor="middle" class="lbl-t" style="fill:#a78bfa">📡 PLC data: monitoring and control over the power cable</text>
+
+        <!-- legend -->
+        <g transform="translate(20,420)">
+          <rect x="0" y="-10" width="14" height="6" rx="3" fill="url(#cab)"/><text x="22" y="-4" class="lbl-t">power</text>
+          <rect x="90" y="-10" width="14" height="6" rx="3" fill="#34e3ff"/><text x="112" y="-4" class="lbl-t">LN₂ cooling</text>
+          <rect x="220" y="-10" width="14" height="6" rx="3" fill="#a78bfa"/><text x="242" y="-4" class="lbl-t">data (PLC)</text>
+        </g>
+      </svg>
+    </div>
+    <div class="cap"><p>Grid power enters as MV AC, runs through the superconducting cable as ±30 kV bipolar DC, and is rectified to the rack bus. The same closed-loop liquid nitrogen that keeps the cable superconducting is the cold source for the GPU racks, one cooling system instead of two. Monitoring data rides the power cable via PLC.</p></div>
+  </div>
+</section>
+
+<!-- FIG 2 + 3 -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="grid grid-2">
+
+      <!-- CROSS SECTION -->
+      <div>
+        <span class="eyebrow">Figure 2 · Cable cross-section</span>
+        <h2 class="sec-title" style="font-size:26px">Inside the conductor.</h2>
+        <div class="glass figure reveal" style="margin-top:14px">
+          <svg viewBox="0 0 440 440" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="core2" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#bff6ff"/><stop offset="60%" stop-color="#34e3ff"/><stop offset="100%" stop-color="#1e6bd6"/>
+              </radialGradient>
+            </defs>
+            <circle cx="200" cy="220" r="180" fill="#0a1226" stroke="rgba(120,170,255,0.18)"/>
+            <!-- outer sheath -->
+            <circle cx="200" cy="220" r="170" fill="none" stroke="#43507a" stroke-width="14"/>
+            <!-- vacuum/insulation -->
+            <circle cx="200" cy="220" r="148" fill="none" stroke="rgba(167,139,250,0.5)" stroke-width="16" stroke-dasharray="3 5"/>
+            <!-- LN2 channel -->
+            <circle cx="200" cy="220" r="120" fill="none" stroke="#34e3ff" stroke-width="20" opacity="0.55"/>
+            <circle class="flow" cx="200" cy="220" r="120" fill="none" stroke="#bff6ff" stroke-width="4"/>
+            <!-- copper stabilizer -->
+            <circle cx="200" cy="220" r="92" fill="none" stroke="#d98a4f" stroke-width="10"/>
+            <!-- HTS tape -->
+            <circle cx="200" cy="220" r="78" fill="none" stroke="#5b8cff" stroke-width="10"/>
+            <!-- former core -->
+            <circle cx="200" cy="220" r="60" fill="url(#core2)"/>
+            <text x="200" y="216" text-anchor="middle" class="lbl-b" style="fill:#06122a">YBCO</text>
+            <text x="200" y="234" text-anchor="middle" class="lbl-t" style="fill:#06122a">77 K</text>
+
+            <!-- callouts -->
+            <g stroke="rgba(120,170,255,0.4)" stroke-width="1">
+              <line x1="260" y1="160" x2="410" y2="120"/>
+              <line x1="285" y1="195" x2="410" y2="175"/>
+              <line x1="300" y1="240" x2="410" y2="245"/>
+              <line x1="290" y1="300" x2="410" y2="315"/>
+              <line x1="250" y1="345" x2="410" y2="380"/>
+            </g>
+            <text x="415" y="124" class="lbl-b">Outer sheath</text>
+            <text x="415" y="179" class="lbl-b" style="fill:#a78bfa">Vacuum insulation</text>
+            <text x="415" y="249" class="lbl-c">LN₂ coolant channel</text>
+            <text x="415" y="319" class="lbl-b" style="fill:#d98a4f">Copper stabilizer</text>
+            <text x="415" y="384" class="lbl-b" style="fill:#5b8cff">HTS tape (YBCO)</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- FOOTPRINT -->
+      <div>
+        <span class="eyebrow">Figure 3 · Floor footprint</span>
+        <h2 class="sec-title" style="font-size:26px">The space it gives back.</h2>
+        <div class="glass figure reveal" style="margin-top:14px">
+          <svg viewBox="0 0 440 440" xmlns="http://www.w3.org/2000/svg">
+            <!-- CONVENTIONAL -->
+            <text x="110" y="30" text-anchor="middle" class="lbl-b">Conventional</text>
+            <rect x="20" y="45" width="180" height="360" rx="10" fill="#0d1530" stroke="rgba(120,170,255,0.25)"/>
+            <rect x="35" y="60" width="150" height="60" rx="6" fill="rgba(251,113,133,0.18)" stroke="rgba(251,113,133,0.5)"/>
+            <text x="110" y="95" text-anchor="middle" class="lbl-t" style="fill:#fb7185">Transformer room</text>
+            <rect x="35" y="130" width="150" height="50" rx="6" fill="rgba(255,214,107,0.14)" stroke="rgba(255,214,107,0.4)"/>
+            <text x="110" y="160" text-anchor="middle" class="lbl-t" style="fill:#ffd66b">Chiller yard</text>
+            <g stroke="rgba(120,170,255,0.4)" stroke-width="6">
+              <line x1="40" y1="195" x2="180" y2="195"/><line x1="40" y1="208" x2="180" y2="208"/>
+            </g>
+            <text x="110" y="230" text-anchor="middle" class="lbl-t">wide cable trays</text>
+            <rect x="35" y="245" width="150" height="150" rx="6" fill="rgba(52,227,255,0.06)" stroke="rgba(52,227,255,0.2)"/>
+            <text x="110" y="320" text-anchor="middle" class="lbl-t">white space</text>
+
+            <!-- HTS -->
+            <text x="330" y="30" text-anchor="middle" class="lbl-b">SuperGrid DC</text>
+            <rect x="240" y="45" width="180" height="360" rx="10" fill="#0d1530" stroke="rgba(52,227,255,0.35)"/>
+            <rect x="255" y="60" width="70" height="55" rx="6" fill="rgba(52,227,255,0.14)" stroke="rgba(52,227,255,0.45)"/>
+            <text x="290" y="92" text-anchor="middle" class="lbl-t" style="fill:#34e3ff">LN₂ plant</text>
+            <line x1="255" y1="135" x2="405" y2="135" stroke="url(#cab)" stroke-width="6"/>
+            <text x="330" y="155" text-anchor="middle" class="lbl-t">slim HTS run</text>
+            <rect x="255" y="170" width="150" height="225" rx="6" fill="rgba(74,222,128,0.10)" stroke="rgba(74,222,128,0.4)"/>
+            <text x="330" y="280" text-anchor="middle" class="lbl-b" style="fill:#4ade80">+ reclaimed</text>
+            <text x="330" y="300" text-anchor="middle" class="lbl-b" style="fill:#4ade80">white space</text>
+            <text x="330" y="320" text-anchor="middle" class="lbl-t">more sellable kW / m²</text>
+
+            <!-- arrow -->
+            <path d="M205 225 h30" stroke="#4ade80" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+            <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#4ade80"/></marker></defs>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FIG 4 SHARED LOOP -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <span class="eyebrow">Figure 4 · Shared cooling loop</span>
+    <h2 class="sec-title">The cold side does double duty.</h2>
+    <div class="glass figure reveal" style="margin-top:18px">
+      <svg viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg">
+        <!-- liquefier -->
+        <rect x="40" y="120" width="150" height="90" rx="12" fill="url(#cryo)" stroke="rgba(52,227,255,0.35)"/>
+        <text x="115" y="158" text-anchor="middle" class="lbl-b">LN₂ liquefier</text>
+        <text x="115" y="176" text-anchor="middle" class="lbl-t">re-cools return</text>
+        <text x="115" y="194" text-anchor="middle" class="lbl-w">electricity in ⚡</text>
+
+        <!-- cold supply -->
+        <path d="M190 145 H840" stroke="#34e3ff" stroke-width="6" fill="none"/>
+        <line class="flow" x1="195" y1="145" x2="835" y2="145" stroke="#bff6ff" stroke-width="3"/>
+        <text x="515" y="132" text-anchor="middle" class="lbl-c">cold LN₂ supply · 77 K</text>
+
+        <!-- branch to cable -->
+        <path d="M360 145 V90 H480" stroke="#34e3ff" stroke-width="4" fill="none"/>
+        <rect x="480" y="62" width="160" height="56" rx="10" fill="#0d1530" stroke="rgba(91,140,255,0.5)"/>
+        <text x="560" y="86" text-anchor="middle" class="lbl-b">HTS cable jacket</text>
+        <text x="560" y="104" text-anchor="middle" class="lbl-t">absorbs parasitic heat</text>
+
+        <!-- branch to racks -->
+        <path d="M700 145 V210 H560" stroke="#34e3ff" stroke-width="4" fill="none" stroke-dasharray="6 6"/>
+        <rect x="400" y="200" width="160" height="56" rx="10" fill="#0d1530" stroke="rgba(52,227,255,0.5)"/>
+        <text x="480" y="224" text-anchor="middle" class="lbl-b">Rack heat exchanger</text>
+        <text x="480" y="242" text-anchor="middle" class="lbl-t">absorbs GPU heat</text>
+
+        <!-- warm return -->
+        <path d="M480 256 V285 H115 V210" stroke="#ff9d54" stroke-width="5" fill="none"/>
+        <path d="M640 90 H880 V285 H560" stroke="#ff9d54" stroke-width="5" fill="none"/>
+        <text x="300" y="305" text-anchor="middle" class="lbl-w">warm nitrogen return → liquefier</text>
+
+        <!-- note -->
+        <text x="980" y="160" text-anchor="end" class="lbl-t">Closed loop: no nitrogen consumed.</text>
+        <text x="980" y="178" text-anchor="end" class="lbl-t">One plant cools cable + racks.</text>
+      </svg>
+    </div>
+    <div class="cap"><p>A single closed loop. Cold nitrogen leaves the liquefier, splits between the cable cryostat (a small parasitic load) and the rack heat exchangers (the main cooling job), then returns warm to be re-cooled. Because the loop is closed, no nitrogen is consumed. Open-loop delivered nitrogen as continuous rack cooling was evaluated and ruled out as far too expensive.</p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div><b>SuperGrid DC</b><br>Engineering schematics of the superconducting power and cooling system.</div>
+    <div>±30 kV bipolar DC · 77 K closed-loop LN₂ · PLC over power.<br>© 2026 SuperGrid DC. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(()=>e.target.classList.add('in'), (i%3)*80); obs.unobserve(e.target);} });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

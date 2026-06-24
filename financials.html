@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics · SuperGrid DC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="dot"></span> SuperGrid&nbsp;DC</div>
+    <div class="nav-links">
+      <a href="index.html">Technology</a>
+      <a href="financials.html" class="active">Economics</a>
+      <a href="calculator.html">Calculator</a>
+      <a href="design.html">Design</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" style="padding-bottom:40px">
+  <div class="wrap">
+    <span class="tag">📊 Cost &amp; benefit model · 500 MW · 25-year horizon</span>
+    <h1>The economics, <span class="grad">end to end.</span></h1>
+    <p class="lead">
+      A bottom-up model. Cable current, cryogenic load and capital cost are derived from physics, then compared
+      against a conventional 500&nbsp;MW data center. Every figure traces to an adjustable input.
+    </p>
+  </div>
+</header>
+
+<!-- HEADLINE STATS -->
+<section style="padding-top:8px">
+  <div class="wrap">
+    <div class="grid grid-4">
+      <div class="glass stat reveal"><div class="stat-num stat-cyan">€92<small> M</small></div><div class="stat-label">First-unit subsystem, including first-of-a-kind development</div></div>
+      <div class="glass stat reveal"><div class="stat-num">€67<small> M</small></div><div class="stat-label">At fleet scale, once development is amortized</div></div>
+      <div class="glass stat reveal"><div class="stat-num">€2.7<small> M/yr</small></div><div class="stat-label">Proven energy saving from the HTS cable</div></div>
+      <div class="glass stat reveal"><div class="stat-num">≥50<small> %</small></div><div class="stat-label">Load factor threshold, comfortably met by AI workloads</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCOPE -->
+<section id="scope" style="padding-top:28px">
+  <div class="wrap">
+    <div class="callout cool reveal">
+      <span class="ci">🏗️</span>
+      <div>
+        <h4>What these numbers cover</h4>
+        <p>A full 500&nbsp;MW data center costs roughly €5&nbsp;billion to build (2025 benchmarks of about
+          $11&nbsp;million per MW). The figures on this page cover the power-delivery and cooling subsystem that
+          superconductivity changes, around 1&nbsp;% of the total build. Generators, UPS, building shell and racks
+          are identical to a conventional facility, so they fall out of the comparison.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILD COST -->
+<section id="build">
+  <div class="wrap">
+    <span class="eyebrow">Capital cost</span>
+    <h2 class="sec-title">More to build first, competitive at scale.</h2>
+    <p class="sec-sub" style="margin-bottom:26px">
+      As an unproven system, the first unit carries a first-of-a-kind development cost of about €25&nbsp;M for
+      engineering, certification, integration and contingency. That makes the first build more expensive than
+      conventional. As the design is repeated across a fleet, development is amortized and the recurring subsystem
+      cost falls below conventional, because the superconducting design removes a step-down transformer and shrinks
+      the civil works.
+    </p>
+
+    <div class="glass card reveal">
+      <div class="bar-row"><div class="lbl">Full system, first unit</div>
+        <div class="bar-track"><div class="bar-fill warm" style="width:100%"></div></div>
+        <div class="val">€92.0 M</div></div>
+      <div class="bar-row"><div class="lbl">Conventional</div>
+        <div class="bar-track"><div class="bar-fill muted" style="width:77.5%"></div></div>
+        <div class="val">€71.3 M</div></div>
+      <div class="bar-row"><div class="lbl">Full system, at scale</div>
+        <div class="bar-track"><div class="bar-fill" style="width:72.8%"></div></div>
+        <div class="val">€67.0 M</div></div>
+      <div class="bar-row"><div class="lbl">HTS spine, at scale</div>
+        <div class="bar-track"><div class="bar-fill" style="width:70.1%"></div></div>
+        <div class="val">€64.5 M</div></div>
+      <p style="color:var(--ink-faint); font-size:13.5px; margin-top:14px">
+        Bottom-up capital cost: HTS cable (8.33 kA x length x €/kA·m), cryogenic plant (€/W_th), rectifiers,
+        switchgear, safety, civil works, and first-of-a-kind development for the first unit. The conventional design
+        carries a transformer of about €15&nbsp;M that the superconducting design does not.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CAPEX BREAKDOWN -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="table-wrap glass reveal">
+      <table>
+        <thead><tr><th>Capital line item (full system, 500 MW)</th><th class="num">Conventional</th><th class="num">Full system</th></tr></thead>
+        <tbody>
+          <tr><td>Power cable (conductor and cryostat)</td><td class="num">€3.1 M</td><td class="num">€6.2 M</td></tr>
+          <tr><td>Cryogenic plant (liquefier)</td><td class="num">n/a</td><td class="num">€1.0 M</td></tr>
+          <tr><td>Step-down transformer</td><td class="num neg">€15.0 M</td><td class="num pos">€0</td></tr>
+          <tr><td>Rectifiers (AC/DC for racks)</td><td class="num">€40.0 M</td><td class="num">€40.0 M</td></tr>
+          <tr><td>Switchgear and protection</td><td class="num">€12.5 M</td><td class="num">€15.0 M</td></tr>
+          <tr><td>PLC modems and DSP</td><td class="num">n/a</td><td class="num">€0.75 M</td></tr>
+          <tr><td>O₂ safety, quench protection and FCL</td><td class="num">€0</td><td class="num">€0.63 M</td></tr>
+          <tr><td>Civil works inside the data center</td><td class="num">€0.6 M</td><td class="num">€0.35 M</td></tr>
+          <tr><td>Engineering (allocated per site)</td><td class="num">€0.1 M</td><td class="num">€4.0 M</td></tr>
+          <tr style="border-top:2px solid var(--border)"><td><b>Subsystem build, at fleet scale</b></td><td class="num"><b>€71.3 M</b></td><td class="num hl"><b>€67.0 M</b></td></tr>
+          <tr><td>First-of-a-kind development (first unit only)</td><td class="num">€0</td><td class="num warn">€25.0 M</td></tr>
+          <tr style="border-top:1px solid var(--border)"><td><b>First-unit build cost</b></td><td class="num"><b>€71.3 M</b></td><td class="num warn"><b>€92.0 M</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="color:var(--ink-faint); font-size:13px; margin-top:12px">
+      Rectifiers dominate both columns and are identical. The swing items are the transformer, which the
+      superconducting design removes, and the first-of-a-kind development cost, which applies only to the first unit
+      and falls away as the design scales across a fleet of sites.
+    </p>
+  </div>
+</section>
+
+<!-- SCENARIO TABLE -->
+<section id="returns">
+  <div class="wrap">
+    <span class="eyebrow">Returns</span>
+    <h2 class="sec-title">Conservative and upside cases.</h2>
+    <p class="sec-sub" style="margin-bottom:24px">
+      Net present value and payback are measured against the conventional baseline over 25 years at a 7&nbsp;% real
+      discount rate. The conservative case counts only proven energy savings and strategic value. The upside case
+      adds the projected efficiency of the shared cooling loop.
+    </p>
+    <div class="table-wrap glass reveal">
+      <table>
+        <thead><tr>
+          <th>Metric</th><th class="num">HTS spine</th><th class="num">Full system</th><th>Definition</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Subsystem build cost (at scale)</td><td class="num">€64.5 M</td><td class="num">€67.0 M</td><td>Recurring capital, development amortized.</td></tr>
+          <tr><td>LCOE delivered</td><td class="num">€36/MWh</td><td class="num hl">€22/MWh</td><td>Lifetime cost per MWh delivered to the racks.</td></tr>
+          <tr><td>Total cost of ownership</td><td class="num">€125</td><td class="num">€76</td><td>Euro per kW-IT per year.</td></tr>
+          <tr><td>NPV, conservative case</td><td class="num pos">€22 M</td><td class="num pos">€15 M</td><td>Proven savings and strategic value only.</td></tr>
+          <tr><td>NPV, with cooling upside</td><td class="num">€22 M</td><td class="num hl">up to €600 M+</td><td>Adds projected shared-cooling efficiency.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="color:var(--ink-faint); font-size:13.5px; margin-top:12px">
+      Returns are evaluated at fleet-scale recurring cost, with first-of-a-kind development amortized across the
+      rollout. The first unit additionally carries the roughly €25&nbsp;M development cost shown above. The upside
+      case depends on a projected cooling efficiency not yet measured at scale; the conservative case stands on
+      proven physics alone and is the basis for any commitment.
+    </p>
+  </div>
+</section>
+
+<!-- VALUE COMPOSITION -->
+<section id="composition">
+  <div class="wrap">
+    <span class="eyebrow">Value composition</span>
+    <h2 class="sec-title">Proven savings, kept separate from projected upside.</h2>
+    <p class="sec-sub" style="margin-bottom:24px">The annual benefit has three components, reported separately so proven value is never blended with projection.</p>
+
+    <div class="glass card reveal">
+      <div class="bar-row"><div class="lbl">Projected cooling efficiency<br><span style="font-size:11px;color:var(--ink-faint)">shared loop, not yet measured at scale</span></div>
+        <div class="bar-track"><div class="bar-fill warm" style="width:94%"></div></div>
+        <div class="val">~€42 M/yr</div></div>
+      <div class="bar-row"><div class="lbl">Proven cable saving<br><span style="font-size:11px;color:var(--ink-faint)">eliminated conductor loss</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:6%"></div></div>
+        <div class="val">~€2.7 M/yr</div></div>
+      <div class="bar-row"><div class="lbl">Strategic value<br><span style="font-size:11px;color:var(--ink-faint)">density, reliability, FCL</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:4%; background:linear-gradient(90deg,var(--violet),#7c6df0)"></div></div>
+        <div class="val">~€1.4 M/yr</div></div>
+      <p style="color:var(--ink-dim); font-size:14.5px; margin-top:16px">
+        The proven cable saving is physics: a superconductor carries current without resistive loss. The projected
+        cooling efficiency is the larger figure, but it reflects a shared-loop design assumption that a conventional
+        facility could also pursue. It is presented as upside, not as the basis for the business case.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGIC VALUE -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <span class="eyebrow">Superconductor-specific value</span>
+    <h2 class="sec-title">What copper cannot deliver.</h2>
+    <p class="sec-sub" style="margin-bottom:24px">These streams come from the superconductor's form factor and behaviour, independent of the cooling assumption.</p>
+    <div class="grid grid-4">
+      <div class="glass card reveal"><h3 style="font-size:17px">🏢 Density</h3><p>Reclaimed floor space sold as white-space or avoided new-build, a Munich-style footprint gain indoors.</p></div>
+      <div class="glass card reveal"><h3 style="font-size:17px">🛡️ Reliability</h3><p>A fault-current-limiting section protects rectifiers and racks from grid transients.</p></div>
+      <div class="glass card reveal"><h3 style="font-size:17px">⏱️ Grid timing</h3><p>Higher power density per connection point helps secure 500 MW before transmission queues clear.</p></div>
+      <div class="glass card reveal"><h3 style="font-size:17px">📡 Simplicity</h3><p>PLC removes a parallel data cable, and one cryogenic system replaces cable cooling plus chillers.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ASSUMPTIONS -->
+<section>
+  <div class="wrap">
+    <span class="eyebrow">Key model inputs</span>
+    <h2 class="sec-title">Every figure traces to an input.</h2>
+    <div class="table-wrap glass reveal" style="margin-top:20px">
+      <table>
+        <thead><tr><th>Input</th><th class="num">Value</th><th>Confidence</th></tr></thead>
+        <tbody>
+          <tr><td>Facility IT power</td><td class="num">500 MW</td><td><span class="pill pill-blue">Anchor</span></td></tr>
+          <tr><td>System voltage (bipolar DC)</td><td class="num">±30 kV</td><td><span class="pill pill-good">High</span></td></tr>
+          <tr><td>Cable current (derived)</td><td class="num">8.33 kA</td><td><span class="pill pill-good">Validated</span></td></tr>
+          <tr><td>Operating temperature</td><td class="num">77 K</td><td><span class="pill pill-good">High</span></td></tr>
+          <tr><td>HTS tape and cryostat cost</td><td class="num">€1500/kA·m</td><td><span class="pill pill-warn">Indicative</span></td></tr>
+          <tr><td>Shared-cooling COP</td><td class="num">6.0</td><td><span class="pill pill-warn">Projected</span></td></tr>
+          <tr><td>Discount rate (real)</td><td class="num">7 %</td><td><span class="pill pill-blue">Medium</span></td></tr>
+          <tr><td>Evaluation horizon</td><td class="num">25 yr</td><td><span class="pill pill-blue">Anchor</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="color:var(--ink-faint); font-size:13px; margin-top:16px">
+      <a href="calculator.html" style="font-weight:600">Open the interactive calculator →</a> to adjust any input and see the result update live.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div><b>SuperGrid DC</b><br>Cost and benefit model · 500 MW · 25-year, 7 % real discount</div>
+    <div>Conservative case built on proven physics.<br>© 2026 SuperGrid DC. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(()=>e.target.classList.add('in'), (i%4)*70); obs.unobserve(e.target);} });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

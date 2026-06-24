@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculator · SuperGrid DC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .method { padding: 30px; }
+  .method h3 { font-size: 19px; margin: 26px 0 10px; display:flex; align-items:center; gap:10px; }
+  .method h3:first-child { margin-top: 0; }
+  .method p { color: var(--ink-dim); font-size: 15px; margin-bottom: 10px; }
+  .formula {
+    font-family: 'Space Grotesk', monospace; font-size: 14.5px; color: var(--ink);
+    background: rgba(7,11,26,0.6); border: 1px solid var(--border); border-left: 3px solid var(--cyan);
+    border-radius: 10px; padding: 14px 18px; margin: 12px 0; line-height: 1.7; overflow-x: auto;
+  }
+  .formula .o { color: var(--cyan); }            /* operators / result */
+  .formula .i { color: var(--warm); }            /* input variable */
+  .formula .c { color: var(--ink-faint); }       /* comment */
+  .io-tags { display:flex; flex-wrap:wrap; gap:8px; margin: 6px 0 4px; }
+  .io-tag { font-size:12px; padding:3px 10px; border-radius:999px; background:rgba(255,214,107,0.12); color:var(--warm); border:1px solid rgba(255,214,107,0.25); }
+  .step-n { width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:none;
+            background:rgba(52,227,255,0.14);color:var(--cyan);font-family:'Space Grotesk';font-weight:700;font-size:14px; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="dot"></span> SuperGrid&nbsp;DC</div>
+    <div class="nav-links">
+      <a href="index.html">Technology</a>
+      <a href="financials.html">Economics</a>
+      <a href="calculator.html" class="active">Calculator</a>
+      <a href="design.html">Design</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" style="padding:64px 0 28px">
+  <div class="wrap">
+    <span class="tag">🎛️ Interactive model</span>
+    <h1 style="font-size:clamp(32px,5vw,52px)">The interactive <span class="grad">model.</span></h1>
+    <p class="lead" style="max-width:60ch">
+      The full cost and benefit model, live in the browser. Every result updates instantly:
+      capital cost, NPV, LCOE and the requirements check. The
+      <b style="color:var(--warm)">Count cooling-efficiency claim</b> switch separates proven savings from
+      projected upside.
+    </p>
+  </div>
+</header>
+
+<section style="padding-top:14px">
+  <div class="wrap">
+    <div class="calc-grid">
+
+      <!-- CONTROLS -->
+      <div class="glass controls">
+        <h3>Inputs</h3>
+        <p class="hint">Adjust any blue value to update the results.</p>
+
+        <div class="ctrl">
+          <div class="ctrl-head"><label>Scenario</label></div>
+          <div class="seg" id="seg-scenario">
+            <button data-v="spine">HTS Spine</button>
+            <button data-v="full" class="on">Full Concept</button>
+          </div>
+        </div>
+
+        <div class="ctrl">
+          <div class="ctrl-head"><label>Facility IT power</label><span class="v" id="v-mw">500 MW</span></div>
+          <input type="range" id="mw" min="100" max="600" step="10" value="500">
+        </div>
+        <div class="ctrl">
+          <div class="ctrl-head"><label>Full-facility build cost <span class="pill pill-blue" style="font-size:10px">context</span></label><span class="v" id="v-fac">€10 M/MW</span></div>
+          <input type="range" id="fac" min="4" max="20" step="0.5" value="10">
+          <p style="font-size:11.5px; color:var(--ink-faint); margin-top:6px">All-in cost to build the whole facility. 2025 benchmarks: standard about $11 M/MW, AI-grade $15 to $20 M/MW. Shown for context, and the same on both sides, so it does not affect the comparison.</p>
+        </div>
+        <div class="ctrl">
+          <div class="ctrl-head"><label>Continuous load factor</label><span class="v" id="v-lf">0.85</span></div>
+          <input type="range" id="lf" min="0.40" max="0.95" step="0.01" value="0.85">
+        </div>
+        <div class="ctrl">
+          <div class="ctrl-head"><label>Electricity price</label><span class="v" id="v-price">€90/MWh</span></div>
+          <input type="range" id="price" min="50" max="150" step="5" value="90">
+        </div>
+        <div class="ctrl">
+          <div class="ctrl-head"><label>Discount rate (real)</label><span class="v" id="v-disc">7.0%</span></div>
+          <input type="range" id="disc" min="0.04" max="0.13" step="0.005" value="0.07">
+        </div>
+        <div class="ctrl">
+          <div class="ctrl-head"><label>Evaluation horizon</label><span class="v" id="v-life">25 yr</span></div>
+          <input type="range" id="life" min="10" max="40" step="1" value="25">
+        </div>
+        <div class="ctrl">
+          <div class="ctrl-head"><label>HTS tape + cryostat cost</label><span class="v" id="v-tape">€1500/kA·m</span></div>
+          <input type="range" id="tape" min="800" max="3000" step="50" value="1500">
+        </div>
+        <div class="ctrl">
+          <div class="ctrl-head"><label>System voltage (per pole)</label><span class="v" id="v-volt">±30 kV</span></div>
+          <input type="range" id="volt" min="20" max="40" step="1" value="30">
+        </div>
+        <div class="ctrl">
+          <div class="ctrl-head"><label>Cable length in facility</label><span class="v" id="v-len">250 m</span></div>
+          <input type="range" id="len" min="50" max="500" step="10" value="250">
+        </div>
+        <div class="ctrl" id="ctrl-cop">
+          <div class="ctrl-head"><label>Shared-cooling COP <span class="pill pill-warn" style="font-size:10px">soft</span></label><span class="v" id="v-cop">6.0</span></div>
+          <input type="range" id="cop" min="4" max="8" step="0.1" value="6">
+        </div>
+        <div class="ctrl" id="ctrl-dev">
+          <div class="ctrl-head"><label>First-of-a-kind development <span class="pill pill-warn" style="font-size:10px">raw tech</span></label><span class="v" id="v-dev">€25 M</span></div>
+          <input type="range" id="dev" min="0" max="120" step="5" value="25">
+          <p style="font-size:11.5px; color:var(--ink-faint); margin-top:6px">NRE, certification, integration risk &amp; contingency for an unproven system. Falls toward €0 as a fleet is built.</p>
+        </div>
+        <div class="ctrl">
+          <div class="ctrl-head"><label>Floor space reclaimed</label><span class="v" id="v-floor">120 m²</span></div>
+          <input type="range" id="floor" min="0" max="400" step="10" value="120">
+        </div>
+        <div class="ctrl">
+          <div class="ctrl-head"><label>White-space revenue <span class="pill pill-blue" style="font-size:10px">benefit</span></label><span class="v" id="v-ws">€12 k/m²·yr</span></div>
+          <input type="range" id="ws" min="0" max="30000" step="1000" value="12000">
+          <p style="font-size:11.5px; color:var(--ink-faint); margin-top:6px">Revenue (or avoided new-build) per m² of white-space the HTS system frees up. Density benefit a copper feed can't give.</p>
+        </div>
+
+        <div class="switch-row">
+          <div class="lbl"><b>Include development cost</b><br><span style="font-size:12px;color:var(--ink-faint)">First unit vs mature pricing</span></div>
+          <div class="toggle on" id="t-dev"><div class="knob"></div></div>
+        </div>
+        <div class="switch-row">
+          <div class="lbl"><b>Count cooling-efficiency claim</b><br><span style="font-size:12px;color:var(--ink-faint)">The €600M-vs-€15M switch</span></div>
+          <div class="toggle on" id="t-cool"><div class="knob"></div></div>
+        </div>
+        <div class="switch-row">
+          <div class="lbl"><b>Count strategic value</b><br><span style="font-size:12px;color:var(--ink-faint)">Density, reliability, FCL</span></div>
+          <div class="toggle on" id="t-strat"><div class="knob"></div></div>
+        </div>
+
+        <button class="btn btn-ghost" id="reset" style="width:100%; margin-top:20px; justify-content:center">↺ Reset to defaults</button>
+      </div>
+
+      <!-- RESULTS -->
+      <div>
+        <div class="glass npv-hero" style="margin-bottom:20px">
+          <div class="rl" style="color:var(--ink-dim); font-size:14px">Lifetime net benefit (NPV) vs conventional</div>
+          <div class="rv grad" id="r-npv">€0</div>
+          <div class="rsub" id="r-verdict" style="font-size:14px; margin-top:8px">…</div>
+        </div>
+
+        <div class="glass" id="ctx-banner" style="padding:16px 20px; margin-bottom:20px; display:flex; gap:14px; align-items:flex-start">
+          <span style="font-size:22px; flex:none">🏗️</span>
+          <div>
+            <div style="font-size:14px; color:var(--ink); font-weight:600; margin-bottom:3px">Scope check: this is a <span style="color:var(--cyan)">subsystem</span> comparison, not the whole building.</div>
+            <div style="font-size:13.5px; color:var(--ink-dim)" id="ctx-text">…</div>
+          </div>
+        </div>
+
+        <div class="res-grid" style="margin-bottom:20px">
+          <div class="glass res"><div class="rl">Subsystem CAPEX <span class="pill pill-blue" style="font-size:9px">HTS-affected</span></div><div class="rv" id="r-capex">€0<small></small></div><div class="rsub" id="r-capex-delta">vs conventional</div></div>
+          <div class="glass res"><div class="rl">LCOE delivered</div><div class="rv" id="r-lcoe">€0<small>/MWh</small></div><div class="rsub">lifetime cost per MWh</div></div>
+          <div class="glass res"><div class="rl">Simple payback</div><div class="rv" id="r-payback">…</div><div class="rsub">vs conventional</div></div>
+          <div class="glass res"><div class="rl">Cable current / pole</div><div class="rv" id="r-ka">0<small> kA</small></div><div class="rsub" id="r-ka-sub">bipolar DC</div></div>
+          <div class="glass res"><div class="rl">Annual benefit</div><div class="rv" id="r-annual">€0<small>/yr</small></div><div class="rsub">vs conventional opex</div></div>
+          <div class="glass res"><div class="rl">Effective PUE</div><div class="rv" id="r-pue">0</div><div class="rsub">total ÷ IT power</div></div>
+        </div>
+
+        <!-- HONEST SPLIT -->
+        <div class="glass card" style="margin-bottom:20px">
+          <h3 style="font-size:18px; margin-bottom:6px">Where the annual benefit comes from</h3>
+          <p style="font-size:14px; color:var(--ink-dim); margin-bottom:18px">
+            Proven superconductor value alongside the projected cooling-efficiency upside, kept separate so the two
+            are never blended.
+          </p>
+          <div class="split-bar" id="split">
+            <div class="seg-hts" id="split-hts" style="width:6%">Proven</div>
+            <div class="seg-cool" id="split-cool" style="width:94%">Projected</div>
+          </div>
+          <div class="legend">
+            <span><i style="background:linear-gradient(90deg,var(--cyan),var(--blue))"></i><span id="lg-hts">Proven cable: €0/yr</span></span>
+            <span><i style="background:linear-gradient(90deg,var(--warm),#ff9d54)"></i><span id="lg-cool">Projected cooling: €0/yr</span></span>
+            <span><i style="background:linear-gradient(90deg,var(--violet),#7c6df0)"></i><span id="lg-strat">Strategic: €0/yr</span></span>
+          </div>
+          <div class="callout cool" id="honest-note" style="margin-top:18px">
+            <span class="ci">💡</span>
+            <div><h4 id="hn-title">Most of the headline is projected cooling, not the superconductor</h4>
+            <p id="hn-body">At these settings, the proven superconductor saving is the smaller blue slice.</p></div>
+          </div>
+        </div>
+
+        <!-- REQUIREMENTS -->
+        <div class="glass card">
+          <h3 style="font-size:18px; margin-bottom:14px">Requirements check</h3>
+          <div class="res-grid" style="grid-template-columns:repeat(2,1fr); gap:8px">
+            <div class="req-mini"><span class="dot2 ok" id="rq1d"></span><span id="rq1">≥ design power</span></div>
+            <div class="req-mini"><span class="dot2 ok" id="rq2d"></span><span id="rq2">≤ 93 K operating</span></div>
+            <div class="req-mini"><span class="dot2 ok" id="rq3d"></span><span id="rq3">PLC reach</span></div>
+            <div class="req-mini"><span class="dot2 ok" id="rq4d"></span><span id="rq4">Load factor ≥ 50%</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section id="method" style="padding-top:20px">
+  <div class="wrap">
+    <span class="eyebrow">Under the hood</span>
+    <h2 class="sec-title">How it's calculated.</h2>
+    <p class="sec-sub" style="margin-bottom:24px">
+      Every result above comes from the chain below. <span class="io-tag" style="display:inline-block">orange marks an adjustable input</span>
+      Every step is explicit, with no hidden assumptions.
+    </p>
+
+    <div class="glass method">
+
+      <h3><span class="step-n">0</span> The one-line idea</h3>
+      <p>We build a full cost &amp; benefit picture for the HTS concept and for a conventional 500&nbsp;MW data center,
+        then report the <b>difference</b>. A positive NPV means the HTS option creates more value than it costs, versus
+        building the conventional one.</p>
+      <div class="formula"><span class="o">Result</span> = (value &amp; cost of HTS option) <span class="o">−</span> (value &amp; cost of conventional baseline)</div>
+
+      <h3><span class="step-n">1</span> Physics &amp; sizing</h3>
+      <p>The facility is first turned into physical quantities. The cable current is what makes superconductors interesting,
+        and at bipolar DC it is half the unipolar value.</p>
+      <div class="formula">
+        Annual energy <span class="o">=</span> <span class="i">facility MW</span> <span class="o">×</span> 8760 h <span class="o">×</span> <span class="i">load factor</span><br>
+        Cable current <span class="o">=</span> <span class="i">MW</span> × 1000 <span class="o">÷</span> (2 <span class="o">×</span> <span class="i">voltage kV</span>)  <span class="c">// bipolar DC, per pole → kA</span><br>
+        Conductor loss <span class="o">=</span> <span class="i">loss %</span> <span class="o">×</span> <span class="i">MW</span>  <span class="c">// copper ≈ 0.8% · HTS = 0</span>
+      </div>
+
+      <h3><span class="step-n">2</span> Cryogenics, the cost of cold</h3>
+      <p>Keeping the cable at 77&nbsp;K isn't free. A refrigerator pays an energy penalty set by thermodynamics (Carnot),
+        derated by real-world efficiency. This is computed, not guessed.</p>
+      <div class="formula">
+        Carnot COP <span class="o">=</span> 77 <span class="o">÷</span> (293 <span class="o">−</span> 77) <span class="o">=</span> 0.357<br>
+        Real COP <span class="o">=</span> Carnot <span class="o">×</span> 0.18 efficiency <span class="o">=</span> 0.064<br>
+        Liquefier power <span class="o">=</span> cable heat load <span class="o">÷</span> Real COP  <span class="c">// small, the cable is well insulated</span>
+      </div>
+
+      <h3><span class="step-n">3</span> Cooling electricity</h3>
+      <p>Cooling is the biggest energy item in any data center. The conventional case runs chillers; the Full Concept
+        claims a better effective COP from the shared loop. <b>This is the soft assumption</b> the honest-split bar isolates.</p>
+      <div class="formula">
+        Cooling power <span class="o">=</span> annual energy <span class="o">×</span> <span class="i">cooling share</span> <span class="o">×</span> (chiller COP <span class="o">÷</span> <span class="i">shared COP</span>)<br>
+        <span class="c">// turn "Count cooling claim" OFF → shared COP = chiller COP → saving disappears</span>
+      </div>
+
+      <h3><span class="step-n">4</span> Build cost (CAPEX)</h3>
+      <p>Bottom-up, not a lump sum. The HTS cable is priced by current × length; the conventional case carries a
+        transformer the HTS design deletes; and raw-tech reality is the development line you toggle.</p>
+      <div class="formula">
+        HTS cable <span class="o">=</span> 2 <span class="o">×</span> current(kA) <span class="o">×</span> <span class="i">length</span> <span class="o">×</span> <span class="i">€/kA·m (tape)</span><br>
+        CAPEX <span class="o">=</span> cable <span class="o">+</span> cryo plant <span class="o">+</span> rectifier <span class="o">+</span> switchgear <span class="o">+</span> safety <span class="o">+</span> civil <span class="o">+</span> R&amp;D<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="o">+</span> <span class="i">first-of-a-kind development</span>  <span class="c">// HTS only, if the switch is on</span><br>
+        <span class="c">// conventional instead carries: MW × €30,000/MVA transformer</span>
+      </div>
+
+      <h3><span class="step-n">5</span> Running cost (OPEX) &amp; benefits</h3>
+      <p>Yearly costs, plus the value streams. The "defensible" HTS benefit is the eliminated cable loss; the density
+        benefit is the floor space you free up.</p>
+      <div class="formula">
+        OPEX <span class="o">=</span> (cooling <span class="o">+</span> liquefier <span class="o">+</span> losses) MWh <span class="o">×</span> <span class="i">€/MWh</span> <span class="o">+</span> <span class="i">MW</span>×O&amp;M <span class="o">+</span> CAPEX×insurance<br>
+        Density benefit <span class="o">=</span> <span class="i">floor space m²</span> <span class="o">×</span> <span class="i">white-space €/m²·yr</span><br>
+        Reliability <span class="o">=</span> downtime min avoided <span class="o">×</span> €/min  <span class="o">+</span>  FCL avoided fault
+      </div>
+
+      <h3><span class="step-n">6</span> Returns: NPV, payback, LCOE</h3>
+      <p>We lay out 25 years of cashflows (escalating electricity, a liquefier replacement at year 15), discount them to
+        today's money, and compare to the baseline.</p>
+      <div class="formula">
+        NPV <span class="o">=</span> Σ (HTS cashflow <span class="o">−</span> baseline cashflow)<sub>year</sub> <span class="o">÷</span> (1 <span class="o">+</span> <span class="i">discount rate</span>)<sup>year</sup><br>
+        Payback <span class="o">=</span> first year cumulative difference turns positive<br>
+        LCOE <span class="o">=</span> lifetime cost (present value) <span class="o">÷</span> lifetime MWh delivered  <span class="c">// €/MWh</span>
+      </div>
+
+      <h3><span class="step-n">7</span> Why the "honest split" matters</h3>
+      <p>The headline benefit splits into two very different things. We keep them visually separate so a soft assumption
+        can never masquerade as proven superconductor value.</p>
+      <div class="formula">
+        <span class="i" style="color:var(--cyan)">Defensible (HTS)</span> <span class="o">=</span> avoided cable loss  <span class="c">// physics, high confidence</span><br>
+        <span class="i">Soft (cooling)</span> <span class="o">=</span> cooling improvement  <span class="c">// a conventional DC could chase it too</span>
+      </div>
+
+      <h3><span class="step-n">8</span> What "build cost" means here (scope boundary)</h3>
+      <p>This is the single most misread number, so it's worth being explicit. The CAPEX above is <b>not</b> the cost of the
+        whole data center. It is the power-delivery and cryogenic subsystem that superconductivity changes.</p>
+      <div class="formula">
+        Full facility (2025 benchmarks) <span class="o">≈</span> <span class="i">€/MW</span> <span class="o">×</span> MW  <span class="c">// ~$11M/MW standard, $15 to $20M/MW AI</span><br>
+        &nbsp;&nbsp;→ a 500 MW DC ≈ <span class="o">€5 billion+</span> all-in<br>
+        Electrical share <span class="o">=</span> 40 to 45%  ·  Cooling share <span class="o">=</span> 15 to 25%  <span class="c">// of total build</span><br>
+        <span class="c">// generators, UPS, PDUs, shell, racks are identical HTS vs conventional → they cancel</span>
+      </div>
+      <p style="font-size:13.5px; color:var(--ink-faint)">
+        Sources: Cushman &amp; Wakefield 2025 cost guide; DatacenterDynamics; iRecruit 2026 benchmarks; Turner &amp; Townsend.
+        Because the facility cost is the same on both sides, it sits in the model as <em>context</em> (the banner up top), not in the NPV.
+      </p>
+
+      <div class="callout" style="margin-top:22px">
+        <span class="ci">🎚️</span>
+        <div>
+          <h4>Confidence of the inputs</h4>
+          <p><b style="color:var(--good)">Solid:</b> facility power, voltage, cable current, operating temp, electricity price.
+            &nbsp;<b style="color:var(--warm)">Soft (treat with care):</b> HTS tape cost, shared-cooling COP, white-space value,
+            development cost. The soft ones move the answer most, which is why they are adjustable rather than fixed.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div><b>SuperGrid DC</b><br>Interactive cost and benefit model.</div>
+    <div>Conventional baseline computed live as the reference.<br>© 2026 SuperGrid DC. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+//  Cost and benefit model for the HTS data center concept.
+//  Scope: HTS cable + shared LN2 + PLC inside a 500 MW data center.
+// ============================================================
+
+// ---- fixed (non-exposed) constants ----
+const C = {
+  ambient: 293, opTemp: 77, reverseBrayton: 0.18,
+  chillerCOP: 4.0, cryoCapexPerWth: 250, rectifierPerMW: 80000,
+  condThermalWperM: 1.0,            // HTS cryostat conduction
+  whiteSpaceVal: 10000,             // €/m²/yr
+  downtimeCost: 9000,               // €/min
+  escalation: 0.02,
+};
+
+// per-scenario fixed parameters
+const SCEN = {
+  baseline: {
+    topology:'ac', condLoss:0.008, condThermal:0, coolingShare:0.30, sharedCOP:0,
+    hts:false, transformerPerMVA:30000, switchgear:25000, plcPerMW:0,
+    o2:0, quench:0, fcl:0, civil:600000, rnd:100000, omPerMW:8000, insurance:0.004,
+    floorM2:0, downtimeMin:0, fclFault:0, plcSavePerM:0,
+  },
+  spine: {
+    topology:'dc', condLoss:0, condThermal:C.condThermalWperM, coolingShare:0.30, sharedCOP:0,
+    hts:true, transformerPerMVA:0, switchgear:30000, plcPerMW:0,
+    o2:120000, quench:180000, fcl:0, civil:400000, rnd:2500000, omPerMW:12000, insurance:0.006,
+    floorM2:60, downtimeMin:5, fclFault:0, plcSavePerM:0,
+  },
+  full: {
+    topology:'dc', condLoss:0, condThermal:C.condThermalWperM, coolingShare:0.25, sharedCOP:6.0,
+    hts:true, transformerPerMVA:0, switchgear:30000, plcPerMW:1500,
+    o2:180000, quench:200000, fcl:250000, civil:350000, rnd:4000000, omPerMW:14000, insurance:0.006,
+    floorM2:120, downtimeMin:15, fclFault:40000, plcSavePerM:60,
+  }
+};
+
+function currentKA(mw, voltage, topology){
+  if (topology === 'dc') return mw*1000/(2*voltage)/1000;     // bipolar, per pole, kA
+  return mw*1000/(Math.sqrt(3)*voltage)/1000;                  // 3-phase AC, kA
+}
+
+function coolingElec(energy, share, sharedCOP){
+  if (sharedCOP <= 0) return energy*share;
+  return energy*share*(C.chillerCOP/sharedCOP);
+}
+
+// returns CAPEX + annual flows for one scenario
+function scenarioModel(s, P){
+  const mw=P.mw, lf=P.lf, price=P.price;
+  const energy = mw*8760*lf;                                   // MWh/yr
+  const volt = s.hts ? P.volt : 11;                            // conventional MV ~11 kV
+  const kA = currentKA(mw, volt, s.topology);
+
+  // cooling COP override (Full only, exposed slider + toggle)
+  let share=s.coolingShare, scop=s.sharedCOP;
+  if (s.hts && s===SCEN.full){
+    scop = P.cop;
+    if (!P.countCooling){ share=0.30; scop=0; }               // strip the cooling claim
+  }
+
+  // physics
+  const heatLoadKW = (s.condThermal*P.len)/1000;               // kW thermal
+  const realCOP = (C.opTemp/(C.ambient-C.opTemp))*C.reverseBrayton;
+  const liqKW = realCOP>0 ? heatLoadKW/realCOP : 0;
+  const liqMWh = liqKW*8.76;
+  const coolMWh = coolingElec(energy, share, scop);
+  const condLossMW = s.condLoss*mw;
+  const totalElec = energy + coolMWh + liqMWh;
+
+  // CAPEX
+  const cableCost = s.hts ? 2*kA*P.len*P.tape : mw*P.len*25;
+  const cryoCost  = s.hts ? heatLoadKW*1000*C.cryoCapexPerWth : 0;
+  const devCost = (s.hts && P.includeDev) ? P.dev : 0;       // first-of-a-kind program (HTS only)
+  const capex =
+      cableCost + cryoCost
+    + mw*s.transformerPerMVA
+    + mw*C.rectifierPerMW
+    + mw*s.switchgear
+    + mw*s.plcPerMW
+    + s.o2 + s.quench + s.fcl + s.civil + s.rnd + devCost;
+
+  // OPEX (annual, year-1 basis)
+  const opex =
+      coolMWh*price + liqMWh*price + condLossMW*8760*lf*price
+    + mw*s.omPerMW + capex*s.insurance;
+
+  // strategic annual + year-0 PLC capex offset
+  const floorVal = (s.hts ? P.floor : 0) * P.ws;             // density benefit (now adjustable)
+  const strat = P.countStrategic
+    ? (floorVal + s.downtimeMin*C.downtimeCost + s.fclFault) : 0;
+  const plcOffset = P.countStrategic ? s.plcSavePerM*P.len : 0;
+  const cryoRepl = cryoCost;                                   // replaced at yr 15
+
+  return { energy, kA, coolMWh, liqMWh, condLossMW, totalElec,
+           capex, opex, strat, plcOffset, cryoRepl, share, scop };
+}
+
+function npvVsBaseline(hts, base, P){
+  const r=P.disc, life=P.life;
+  // year 0
+  let npv = (-(hts.capex) + hts.plcOffset) - (-(base.capex) + base.plcOffset);
+  let cum = npv; let payback = null;
+  for (let y=1; y<=life; y++){
+    const esc = Math.pow(1+C.escalation, y-1);
+    let netH = -hts.opex*esc + hts.strat;
+    let netB = -base.opex*esc + base.strat;
+    if (y===15){ netH -= hts.cryoRepl; netB -= base.cryoRepl; }
+    const d = netH - netB;
+    npv += d/Math.pow(1+r, y);
+    cum += d;
+    if (payback===null && cum>=0) payback = y;
+  }
+  return { npv, payback };
+}
+
+function lcoe(m, P){
+  const r=P.disc, life=P.life;
+  let pvCost = m.capex;
+  for (let y=1; y<=life; y++){
+    let c = m.opex*Math.pow(1+C.escalation,y-1);
+    if (y===15) c += m.cryoRepl;
+    pvCost += c/Math.pow(1+r,y);
+  }
+  const annuity = (1-Math.pow(1+r,-life))/r;
+  const pvEnergy = m.energy*annuity;
+  return pvEnergy>0 ? pvCost/pvEnergy : 0;
+}
+
+// ---- formatting ----
+const fmtM = v => {
+  const a=Math.abs(v);
+  if (a>=1e9) return (v/1e9).toFixed(2).replace(/\.00$/,'')+' B';
+  if (a>=1e6) return (v/1e6).toFixed(1)+' M';
+  if (a>=1e3) return (v/1e3).toFixed(0)+' k';
+  return v.toFixed(0);
+};
+const euroM = v => (v<0?'−€':'€')+fmtM(Math.abs(v));
+
+// ---- state ----
+const state = {
+  scenario:'full', mw:500, lf:0.85, price:90, disc:0.07, life:25,
+  tape:1500, volt:30, len:250, cop:6, dev:25, includeDev:true,
+  floor:120, ws:12000, fac:10, countCooling:true, countStrategic:true
+};
+const defaults = {...state};
+
+function compute(){
+  const P = { mw:state.mw, lf:state.lf, price:state.price, disc:state.disc, life:state.life,
+              tape:state.tape, volt:state.volt, len:state.len, cop:state.cop,
+              dev:state.dev*1e6, includeDev:state.includeDev,
+              floor:state.floor, ws:state.ws,
+              countCooling:state.countCooling, countStrategic:state.countStrategic };
+  const base = scenarioModel(SCEN.baseline, P);
+  const hts  = scenarioModel(SCEN[state.scenario], P);
+  const {npv, payback} = npvVsBaseline(hts, base, P);
+
+  // annual benefit split
+  const coolingSaved = (base.coolMWh - hts.coolMWh)*P.price;        // soft
+  const cableSaved   = (base.condLossMW - hts.condLossMW)*8760*P.lf*P.price; // defensible
+  const stratAnnual  = hts.strat;
+  const opexOtherDelta = (base.opex - hts.opex) - coolingSaved - cableSaved; // O&M+insurance+liq diff
+  const annualTotal  = (base.opex - hts.opex) + stratAnnual;
+
+  return { base, hts, npv, payback, coolingSaved, cableSaved, stratAnnual, opexOtherDelta, annualTotal,
+           lcoe: lcoe(hts, P) };
+}
+
+function render(){
+  const R = compute();
+  const el = id => document.getElementById(id);
+
+  // NPV hero
+  el('r-npv').textContent = euroM(R.npv);
+  el('r-npv').classList.remove('flash'); void el('r-npv').offsetWidth; el('r-npv').classList.add('flash');
+  let verdict;
+  if (R.npv>0) verdict = `Positive NPV. Subsystem cost ${euroM(R.hts.capex)} vs €${fmtM(R.base.capex)} conventional.`;
+  else verdict = `Negative NPV at these inputs. Value does not cover the gap.`;
+  el('r-verdict').textContent = verdict;
+
+  // result cards
+  el('r-capex').innerHTML = euroM(R.hts.capex);
+  const dCapex = R.hts.capex - R.base.capex;
+  el('r-capex-delta').innerHTML = (dCapex<=0?'<span class="pos">':'<span class="neg">')
+    + (dCapex<=0?'−':'+') + '€'+fmtM(Math.abs(dCapex)) + ' vs conventional</span>';
+  el('r-lcoe').innerHTML = '€'+R.lcoe.toFixed(0)+'<small>/MWh</small>';
+  el('r-payback').innerHTML = R.payback===null ? 'never' : R.payback+'<small> yr</small>';
+  el('r-ka').innerHTML = R.hts.kA.toFixed(2)+'<small> kA</small>';
+  el('r-ka-sub').textContent = state.scenario==='spine'||state.scenario==='full' ? 'bipolar DC, per pole' : '';
+  el('r-annual').innerHTML = euroM(R.annualTotal)+'<small>/yr</small>';
+  const pue = R.hts.totalElec / R.hts.energy;
+  el('r-pue').textContent = pue.toFixed(2);
+
+  // facility context: full build cost vs the modeled subsystem
+  const facility = state.mw * state.fac * 1e6;
+  const pct = facility>0 ? (R.hts.capex/facility*100) : 0;
+  el('ctx-text').innerHTML =
+    `A full ${state.mw} MW data center costs ~<b style="color:var(--ink)">€${fmtM(facility)}</b> all-in `
+    + `(at €${state.fac} M/MW). The power and cooling subsystem modeled here is <b style="color:var(--cyan)">€${fmtM(R.hts.capex)}</b>, `
+    + `about <b style="color:var(--ink)">${pct.toFixed(1)}%</b> of the build. The remaining ~97% (generators, UPS, shell, racks) is `
+    + `identical to a conventional facility, so it cancels out of the NPV.`;
+
+  // honest split (use positive magnitudes; clamp tiny negatives to 0 for the bar)
+  const hts_v = Math.max(R.cableSaved, 0);
+  const cool_v = Math.max(R.coolingSaved, 0);
+  const strat_v = Math.max(R.stratAnnual, 0);
+  const sum = hts_v + cool_v + strat_v || 1;
+  const wH = hts_v/sum*100, wC = cool_v/sum*100, wS = strat_v/sum*100;
+  const split = el('split');
+  split.innerHTML =
+      `<div class="seg-hts" style="width:${wH}%">${wH>8?'Proven':''}</div>`
+    + `<div class="seg-cool" style="width:${wC}%">${wC>10?'Projected':''}</div>`
+    + `<div style="width:${wS}%; background:linear-gradient(90deg,var(--violet),#7c6df0)">${wS>10?'Strategic':''}</div>`;
+  el('lg-hts').textContent = `Proven cable: €${fmtM(hts_v)}/yr`;
+  el('lg-cool').textContent = `Projected cooling: €${fmtM(cool_v)}/yr`;
+  el('lg-strat').textContent = `Strategic: €${fmtM(strat_v)}/yr`;
+
+  // note adapts to the composition
+  const coolPct = cool_v/(hts_v+cool_v+strat_v||1)*100;
+  if (!state.countCooling || state.scenario==='spine'){
+    el('hn-title').textContent = 'Conservative case';
+    el('hn-body').innerHTML = `Projected cooling is excluded. The value shown is proven superconductor and strategic benefit: <b>${euroM(R.npv)}</b> NPV, resting on proven physics alone.`;
+    el('honest-note').classList.add('cool');
+  } else if (coolPct>60){
+    el('hn-title').textContent = `${coolPct.toFixed(0)}% of the benefit is projected cooling`;
+    el('hn-body').innerHTML = `The orange slice reflects a shared-loop efficiency assumption that a conventional facility could also pursue. Excluding it gives the conservative case.`;
+    el('honest-note').classList.remove('cool');
+  } else {
+    el('hn-title').textContent = 'Balanced composition';
+    el('hn-body').innerHTML = `Projected cooling still contributes meaningfully and is reported separately from proven value.`;
+    el('honest-note').classList.remove('cool');
+  }
+
+  // requirements
+  const setReq=(d,t,ok,txt)=>{el(d).className='dot2 '+(ok?'ok':'no'); el(t).textContent=txt;};
+  setReq('rq1d','rq1', state.mw<=600, `Power: ${state.mw} MW (design ≤600)`);
+  setReq('rq2d','rq2', true, `Operating: 77 K ≤ 93 K`);
+  setReq('rq3d','rq3', state.len<=2000, `PLC: ${state.len} m ≤ 2 km`);
+  setReq('rq4d','rq4', state.lf>=0.50, `Load factor: ${state.lf.toFixed(2)} ≥ 0.50`);
+
+  // show/hide COP control for spine
+  el('ctrl-cop').style.opacity = state.scenario==='full' ? '1' : '0.4';
+  el('ctrl-cop').style.pointerEvents = state.scenario==='full' ? 'auto' : 'none';
+}
+
+// ---- wiring ----
+const bind = (id, key, fmt) => {
+  const inp = document.getElementById(id);
+  inp.addEventListener('input', () => {
+    state[key] = parseFloat(inp.value);
+    document.getElementById('v-'+id).textContent = fmt(state[key]);
+    render();
+  });
+};
+bind('mw','mw', v=>v+' MW');
+bind('lf','lf', v=>v.toFixed(2));
+bind('price','price', v=>'€'+v+'/MWh');
+bind('disc','disc', v=>(v*100).toFixed(1)+'%');
+bind('life','life', v=>v+' yr');
+bind('tape','tape', v=>'€'+v+'/kA·m');
+bind('volt','volt', v=>'±'+v+' kV');
+bind('len','len', v=>v+' m');
+bind('cop','cop', v=>v.toFixed(1));
+bind('dev','dev', v=>'€'+v+' M');
+bind('floor','floor', v=>v+' m²');
+bind('ws','ws', v=>'€'+(v/1000)+' k/m²·yr');
+bind('fac','fac', v=>'€'+v+' M/MW');
+
+document.querySelectorAll('#seg-scenario button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('#seg-scenario button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); state.scenario=b.dataset.v; render();
+  });
+});
+const tog=(id,key)=>{ const t=document.getElementById(id);
+  t.addEventListener('click', ()=>{ state[key]=!state[key]; t.classList.toggle('on', state[key]); render(); }); };
+tog('t-dev','includeDev'); tog('t-cool','countCooling'); tog('t-strat','countStrategic');
+
+document.getElementById('reset').addEventListener('click', ()=>{
+  Object.assign(state, defaults);
+  for (const [id,key,fmt] of [
+    ['mw','mw',v=>v+' MW'],['lf','lf',v=>v.toFixed(2)],['price','price',v=>'€'+v+'/MWh'],
+    ['disc','disc',v=>(v*100).toFixed(1)+'%'],['life','life',v=>v+' yr'],['tape','tape',v=>'€'+v+'/kA·m'],
+    ['volt','volt',v=>'±'+v+' kV'],['len','len',v=>v+' m'],['cop','cop',v=>v.toFixed(1)],
+    ['dev','dev',v=>'€'+v+' M'],['floor','floor',v=>v+' m²'],['ws','ws',v=>'€'+(v/1000)+' k/m²·yr'],
+    ['fac','fac',v=>'€'+v+' M/MW']]){
+    const inp=document.getElementById(id); inp.value=state[key];
+    document.getElementById('v-'+id).textContent=fmt(state[key]);
+  }
+  document.querySelectorAll('#seg-scenario button').forEach(x=>x.classList.toggle('on', x.dataset.v===state.scenario));
+  document.getElementById('t-dev').classList.toggle('on', state.includeDev);
+  document.getElementById('t-cool').classList.toggle('on', state.countCooling);
+  document.getElementById('t-strat').classList.toggle('on', state.countStrategic);
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
