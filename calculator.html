@@ -108,9 +108,19 @@
           <div class="ctrl-head"><label>Cable length in facility</label><span class="v" id="v-len">250 m</span></div>
           <input type="range" id="len" min="50" max="500" step="10" value="250">
         </div>
+        <div class="ctrl">
+          <div class="ctrl-head"><label>Conventional cooling share <span class="pill pill-blue" style="font-size:10px">baseline</span></label><span class="v" id="v-bshare">30%</span></div>
+          <input type="range" id="bshare" min="0.20" max="0.45" step="0.01" value="0.30">
+          <p style="font-size:11.5px; color:var(--ink-faint); margin-top:6px">Cooling as a share of total facility energy in a conventional data center. This is the comparison baseline.</p>
+        </div>
         <div class="ctrl" id="ctrl-cop">
           <div class="ctrl-head"><label>Shared-cooling COP <span class="pill pill-warn" style="font-size:10px">soft</span></label><span class="v" id="v-cop">6.0</span></div>
           <input type="range" id="cop" min="4" max="8" step="0.1" value="6">
+        </div>
+        <div class="ctrl" id="ctrl-fshare">
+          <div class="ctrl-head"><label>Shared-loop cooling share <span class="pill pill-warn" style="font-size:10px">soft</span></label><span class="v" id="v-fshare">25%</span></div>
+          <input type="range" id="fshare" min="0.10" max="0.45" step="0.01" value="0.25">
+          <p style="font-size:11.5px; color:var(--ink-faint); margin-top:6px">Cooling share with the shared loop. Set it equal to the baseline to remove the cooling-share benefit entirely.</p>
         </div>
         <div class="ctrl" id="ctrl-dev">
           <div class="ctrl-head"><label>First-of-a-kind development <span class="pill pill-warn" style="font-size:10px">raw tech</span></label><span class="v" id="v-dev">€25 M</span></div>
@@ -377,11 +387,15 @@ function scenarioModel(s, P){
   const volt = s.hts ? P.volt : 11;                            // conventional MV ~11 kV
   const kA = currentKA(mw, volt, s.topology);
 
-  // cooling COP override (Full only, exposed slider + toggle)
-  let share=s.coolingShare, scop=s.sharedCOP;
-  if (s.hts && s===SCEN.full){
-    scop = P.cop;
-    if (!P.countCooling){ share=0.30; scop=0; }               // strip the cooling claim
+  // cooling share + COP (both exposed as sliders)
+  let share, scop;
+  if (!s.hts){                                                // conventional baseline
+    share = P.baseCoolShare; scop = 0;
+  } else if (s===SCEN.full){                                  // full concept
+    share = P.fullCoolShare; scop = P.cop;
+    if (!P.countCooling){ share = P.baseCoolShare; scop = 0; } // strip the cooling claim
+  } else {                                                    // spine: no cooling improvement
+    share = P.baseCoolShare; scop = 0;
   }
 
   // physics
@@ -466,6 +480,7 @@ const euroM = v => (v<0?'−€':'€')+fmtM(Math.abs(v));
 const state = {
   scenario:'full', mw:500, lf:0.85, price:90, disc:0.07, life:25,
   tape:1500, volt:30, len:250, cop:6, dev:25, includeDev:true,
+  baseCoolShare:0.30, fullCoolShare:0.25,
   floor:120, ws:12000, fac:10, countCooling:true, countStrategic:true
 };
 const defaults = {...state};
@@ -474,6 +489,7 @@ function compute(){
   const P = { mw:state.mw, lf:state.lf, price:state.price, disc:state.disc, life:state.life,
               tape:state.tape, volt:state.volt, len:state.len, cop:state.cop,
               dev:state.dev*1e6, includeDev:state.includeDev,
+              baseCoolShare:state.baseCoolShare, fullCoolShare:state.fullCoolShare,
               floor:state.floor, ws:state.ws,
               countCooling:state.countCooling, countStrategic:state.countStrategic };
   const base = scenarioModel(SCEN.baseline, P);
@@ -564,8 +580,10 @@ function render(){
   setReq('rq4d','rq4', state.lf>=0.50, `Load factor: ${state.lf.toFixed(2)} ≥ 0.50`);
 
   // show/hide COP control for spine
-  el('ctrl-cop').style.opacity = state.scenario==='full' ? '1' : '0.4';
-  el('ctrl-cop').style.pointerEvents = state.scenario==='full' ? 'auto' : 'none';
+  ['ctrl-cop','ctrl-fshare'].forEach(id=>{
+    el(id).style.opacity = state.scenario==='full' ? '1' : '0.4';
+    el(id).style.pointerEvents = state.scenario==='full' ? 'auto' : 'none';
+  });
 }
 
 // ---- wiring ----
@@ -586,6 +604,8 @@ bind('tape','tape', v=>'€'+v+'/kA·m');
 bind('volt','volt', v=>'±'+v+' kV');
 bind('len','len', v=>v+' m');
 bind('cop','cop', v=>v.toFixed(1));
+bind('bshare','baseCoolShare', v=>(v*100).toFixed(0)+'%');
+bind('fshare','fullCoolShare', v=>(v*100).toFixed(0)+'%');
 bind('dev','dev', v=>'€'+v+' M');
 bind('floor','floor', v=>v+' m²');
 bind('ws','ws', v=>'€'+(v/1000)+' k/m²·yr');
@@ -608,7 +628,8 @@ document.getElementById('reset').addEventListener('click', ()=>{
     ['disc','disc',v=>(v*100).toFixed(1)+'%'],['life','life',v=>v+' yr'],['tape','tape',v=>'€'+v+'/kA·m'],
     ['volt','volt',v=>'±'+v+' kV'],['len','len',v=>v+' m'],['cop','cop',v=>v.toFixed(1)],
     ['dev','dev',v=>'€'+v+' M'],['floor','floor',v=>v+' m²'],['ws','ws',v=>'€'+(v/1000)+' k/m²·yr'],
-    ['fac','fac',v=>'€'+v+' M/MW']]){
+    ['fac','fac',v=>'€'+v+' M/MW'],
+    ['bshare','baseCoolShare',v=>(v*100).toFixed(0)+'%'],['fshare','fullCoolShare',v=>(v*100).toFixed(0)+'%']]){
     const inp=document.getElementById(id); inp.value=state[key];
     document.getElementById('v-'+id).textContent=fmt(state[key]);
   }
