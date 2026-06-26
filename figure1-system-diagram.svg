@@ -1,0 +1,96 @@
+<svg viewBox="0 92 1000 348" width="1000" height="348" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .lbl-t { font-family: 'Inter', Arial, sans-serif; font-size: 12px; fill: #9fb2d8; }
+    .lbl-b { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 13px; font-weight: 600; fill: #eaf1ff; }
+    .lbl-c { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 12px; font-weight: 600; fill: #34e3ff; }
+    .lbl-w { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 12px; font-weight: 600; fill: #ffd66b; }
+    .flow  { stroke-dasharray: 6 14; }
+  </style>
+  <defs>
+    <linearGradient id="cab" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1e6bd6"/><stop offset="50%" stop-color="#34e3ff"/><stop offset="100%" stop-color="#5b8cff"/>
+    </linearGradient>
+    <linearGradient id="rack" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#16203f"/><stop offset="100%" stop-color="#0d1530"/>
+    </linearGradient>
+    <radialGradient id="cryo" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#1b3a5c"/><stop offset="100%" stop-color="#0c1c30"/>
+    </radialGradient>
+  </defs>
+
+  <!-- self-contained dark background so the diagram is readable on any slide -->
+  <rect x="0" y="92" width="1000" height="348" rx="16" fill="#0b1426" stroke="rgba(120,170,255,0.16)" stroke-width="1.5"/>
+
+  <!-- ambient temp band -->
+  <text x="20" y="112" class="lbl-t">Ambient hall · 293 K</text>
+
+  <!-- GRID -->
+  <g>
+    <rect x="20" y="150" width="120" height="120" rx="12" fill="#0d1530" stroke="rgba(120,170,255,0.3)"/>
+    <path d="M55 250 L80 175 L105 250 M62 225 H98 M70 200 H90" stroke="#9fb2d8" stroke-width="2.5" fill="none"/>
+    <text x="80" y="295" text-anchor="middle" class="lbl-b">Grid entry</text>
+    <text x="80" y="312" text-anchor="middle" class="lbl-t">400 kV / MV</text>
+  </g>
+
+  <!-- HTS CABLE run with cryostat -->
+  <g>
+    <rect x="140" y="195" width="260" height="30" rx="15" fill="none" stroke="rgba(167,139,250,0.4)" stroke-width="2" stroke-dasharray="2 4"/>
+    <rect x="140" y="203" width="260" height="14" rx="7" fill="url(#cab)"/>
+    <line class="flow" x1="150" y1="210" x2="395" y2="210" stroke="#bff6ff" stroke-width="3"/>
+    <text x="270" y="188" text-anchor="middle" class="lbl-c">HTS cable MV AC</text>
+    <text x="270" y="244" text-anchor="middle" class="lbl-t">superconducting · zero resistive loss · cryostat at 77 K</text>
+  </g>
+
+  <!-- LN2 PLANT -->
+  <g>
+    <rect x="180" y="320" width="160" height="90" rx="12" fill="url(#cryo)" stroke="rgba(52,227,255,0.35)"/>
+    <text x="260" y="352" text-anchor="middle" class="lbl-b">LN₂ liquefier</text>
+    <text x="260" y="370" text-anchor="middle" class="lbl-t">closed-loop · 77 K</text>
+    <text x="260" y="388" text-anchor="middle" class="lbl-c">❄ shared cold source</text>
+    <path d="M260 320 V250 Q260 232 270 224" stroke="#34e3ff" stroke-width="3" fill="none"/>
+    <path d="M340 365 H600" stroke="#34e3ff" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
+    <text x="470" y="356" text-anchor="middle" class="lbl-c">cold loop → racks</text>
+  </g>
+
+  <!-- RECTIFIER -->
+  <g>
+    <rect x="400" y="150" width="110" height="120" rx="12" fill="#0d1530" stroke="rgba(120,170,255,0.3)"/>
+    <path d="M425 235 h60 M455 235 v-50 M438 200 h34 l-17 -22 z" stroke="#9fb2d8" stroke-width="2.5" fill="none"/>
+    <text x="455" y="295" text-anchor="middle" class="lbl-b">Rectifier</text>
+    <text x="455" y="312" text-anchor="middle" class="lbl-t">AC/DC → rack bus</text>
+  </g>
+
+  <!-- DC busbar -->
+  <rect x="510" y="203" width="90" height="14" rx="7" fill="url(#cab)"/>
+  <line class="flow" x1="515" y1="210" x2="598" y2="210" stroke="#bff6ff" stroke-width="3"/>
+  <text x="555" y="188" text-anchor="middle" class="lbl-t">DC busbar</text>
+
+  <!-- RACKS -->
+  <g>
+    <text x="800" y="112" text-anchor="middle" class="lbl-t">Server hall · liquid-cooled GPU racks</text>
+    <g>
+      <rect x="610" y="120" width="360" height="210" rx="12" fill="none" stroke="rgba(120,170,255,0.2)"/>
+      <g fill="url(#rack)" stroke="rgba(52,227,255,0.3)">
+        <rect x="630" y="150" width="60" height="150" rx="6"/>
+        <rect x="710" y="150" width="60" height="150" rx="6"/>
+        <rect x="790" y="150" width="60" height="150" rx="6"/>
+        <rect x="870" y="150" width="60" height="150" rx="6"/>
+      </g>
+      <g stroke="rgba(52,227,255,0.5)" stroke-width="2">
+        <path d="M636 168 h48 M636 182 h48 M636 196 h48 M636 210 h48 M636 224 h48"/>
+        <path d="M716 168 h48 M716 182 h48 M716 196 h48 M716 210 h48 M716 224 h48"/>
+        <path d="M796 168 h48 M796 182 h48 M796 196 h48 M796 210 h48 M796 224 h48"/>
+        <path d="M876 168 h48 M876 182 h48 M876 196 h48 M876 210 h48 M876 224 h48"/>
+      </g>
+      <text x="790" y="320" text-anchor="middle" class="lbl-t">power in · heat out · data over the same cable</text>
+    </g>
+    <path d="M600 210 H615 V160 H630" stroke="#34e3ff" stroke-width="3" fill="none"/>
+    <path d="M600 365 H950 V305" stroke="#34e3ff" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
+  </g>
+
+  <!-- legend -->
+  <g transform="translate(20,420)">
+    <rect x="0" y="-10" width="14" height="6" rx="3" fill="url(#cab)"/><text x="22" y="-4" class="lbl-t">power</text>
+    <rect x="90" y="-10" width="14" height="6" rx="3" fill="#34e3ff"/><text x="112" y="-4" class="lbl-t">LN₂ cooling</text>
+  </g>
+</svg>
